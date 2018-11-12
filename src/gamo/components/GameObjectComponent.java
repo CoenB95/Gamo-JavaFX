@@ -1,4 +1,6 @@
-package gamo.gameobject;
+package gamo.components;
+
+import gamo.objects.GameObject;
 
 public abstract class GameObjectComponent {
 	private GameObject parentObject;

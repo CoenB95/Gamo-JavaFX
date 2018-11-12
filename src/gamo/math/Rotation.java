@@ -82,13 +82,4 @@ public class Rotation {
 	public Rotation withRoll(double value) {
 		return new Rotation(horizontal, vertical, value);
 	}
-
-	public static void main(String[] args) {
-		for (int i = 0; i < 100; i++) {
-			Rotation r1 = Rotation.ORIGIN.withHorizontal(Math.random() * 360);
-			Rotation r2 = Rotation.ORIGIN.withHorizontal(Math.random() * 360);
-			double small = r1.smallestHorizontalDeltaTo(r2);
-			System.out.format("r1:%6.1f |r2:%6.1f |smallest:%6.1f%n", r1.horizontal, r2.horizontal, small);
-		}
-	}
 }

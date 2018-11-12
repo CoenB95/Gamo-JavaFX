@@ -1,5 +1,7 @@
-package gamo.gameobject;
+package gamo.objects;
 
+import gamo.components.GameObjectComponent;
+import gamo.groups.GameObjectGroup;
 import gamo.math.Position;
 import gamo.math.Rotation;
 
@@ -8,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class GameObject {
-	private GameScene parentScene;
+	private GameObjectGroup parentGroup;
 	private List<GameObjectComponent> components = new ArrayList<>();
 	private Position position;
 	private Rotation rotation;
@@ -29,8 +31,8 @@ public abstract class GameObject {
 		return Collections.unmodifiableList(components);
 	}
 
-	public GameScene getParentScene() {
-		return parentScene;
+	public GameObjectGroup getParentGroup() {
+		return parentGroup;
 	}
 
 	public Position getPosition() {
@@ -49,23 +51,14 @@ public abstract class GameObject {
 		return targetRotation;
 	}
 
-	protected void onAddedToScene(GameScene parent, boolean as3D) {}
-
 	public void onUpdate(double elapsedSeconds) {
 		components.forEach(c -> c.onUpdate(elapsedSeconds));
+		position = targetPosition;
+		rotation = targetRotation;
 	}
 
-	public final void setParentScene(GameScene scene, boolean as3D){
-		parentScene = scene;
-		onAddedToScene(parentScene, as3D);
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
-	public void setRotation(Rotation rotation) {
-		this.rotation = rotation;
+	public void setParent(GameObjectGroup parent){
+		parentGroup = parent;
 	}
 
 	public void setTargetPosition(Position targetPosition) {

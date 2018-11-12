@@ -1,5 +1,7 @@
-package gamo.gameobject;
+package gamo.objects;
 
+import gamo.groups.GameObjectGroup;
+import gamo.scenes.GameScene;
 import javafx.geometry.Point3D;
 import javafx.scene.Camera;
 import javafx.scene.Node;
@@ -24,16 +26,12 @@ public abstract class GameObjectBase extends GameObject {
 	}
 
 	@Override
-	protected void onAddedToScene(GameScene parent, boolean as3D) {
+	public void setParent(GameObjectGroup parent) {
+		super.setParent(parent);
 		if (node == null)
 			return;
 
-		if (node instanceof Camera)
-			parent.setCamera((Camera) node);
-		else if (as3D)
-			parent.add3DNode(node);
-		else
-			parent.add2DNode(node);
+		parent.getGroup().getChildren().add(node);
 	}
 
 	@Override
