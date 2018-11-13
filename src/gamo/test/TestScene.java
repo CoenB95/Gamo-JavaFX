@@ -13,7 +13,7 @@ public class TestScene extends GameScene {
 	public TestScene(Scene scene, Pane root) {
 		super(scene, root);
 
-		Camera camera = new Camera();
+		Camera camera = new Camera(10, 900);
 
 		CubeObject cube = new CubeObject(10, 10, 10);
 		cube.setTargetPosition(Position.ORIGIN.withZ(50));

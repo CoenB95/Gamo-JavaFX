@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 
-public class GameScene extends GameObjectGroup {
+public class GameScene extends GameObject {
 	GameObjectGroup group2D;
 	GameObjectGroup group3D;
 	SubScene scene2D;
@@ -45,9 +45,6 @@ public class GameScene extends GameObjectGroup {
 		scene.setOnKeyPressed(this::onKeyPressed);
 		scene.setOnKeyReleased(this::onKeyReleased);
 		scene3D.setOnMouseMoved(this::onMouseMove);
-
-		addObject(group2D);
-		addObject(group3D);
 	}
 
 	public final void add2DObject(GameObject object) {
@@ -82,6 +79,13 @@ public class GameScene extends GameObjectGroup {
 
 	public void onMouseMove(MouseEvent event) {
 
+	}
+
+	@Override
+	public void onUpdate(double elapsedSeconds) {
+		super.onUpdate(elapsedSeconds);
+		group2D.onUpdate(elapsedSeconds);
+		group3D.onUpdate(elapsedSeconds);
 	}
 
 	public final void setCamera(Camera camera) {

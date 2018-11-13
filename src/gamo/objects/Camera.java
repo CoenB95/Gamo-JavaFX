@@ -5,12 +5,11 @@ import javafx.scene.PerspectiveCamera;
 public class Camera extends GameObjectBase {
 	public javafx.scene.Camera camera;
 
-	public Camera() {
+	public Camera(double nearClip, double farClip) {
 		camera = new PerspectiveCamera(true);
-		camera.setNearClip(10);
-		camera.setFarClip(900);
+		camera.setNearClip(nearClip);
+		camera.setFarClip(farClip);
 
-		//setTargetPosition(getPosition().withY(400));
-		//setNode(camera);
+		setNode(camera);
 	}
 }

@@ -34,6 +34,12 @@ public class Rotation {
 				roll + rotation.roll);
 	}
 
+	public Rotation add(double horizontalValue, double verticalValue, double rollValue) {
+		return new Rotation(horizontal + horizontalValue,
+				vertical + verticalValue,
+				roll + rollValue);
+	}
+
 	public Rotation addHorizontal(double value) {
 		return new Rotation(horizontal + value, vertical, roll);
 	}
@@ -64,6 +70,24 @@ public class Rotation {
 
 	public double smallestHorizontalDeltaTo(Rotation other) {
 		double delta = other.horizontal - horizontal;
+		if (delta > 180)
+			return delta - 360;
+		if (delta < -180)
+			return delta + 360;
+		return delta;
+	}
+
+	public double smallestVerticalDeltaTo(Rotation other) {
+		double delta = other.vertical - vertical;
+		if (delta > 180)
+			return delta - 360;
+		if (delta < -180)
+			return delta + 360;
+		return delta;
+	}
+
+	public double smallestRollDeltaTo(Rotation other) {
+		double delta = other.roll - roll;
 		if (delta > 180)
 			return delta - 360;
 		if (delta < -180)
