@@ -19,7 +19,7 @@ public class GameObjectGroup extends GameObjectBase {
 	}
 
 	public final void addObject(GameObject object) {
-		object.setParent(this);
+		object.setParentGroup(this);
 		objects.add(object);
 	}
 

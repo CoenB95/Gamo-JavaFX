@@ -1,6 +1,7 @@
 package com.cbapps.javafx.gamo.test;
 
 import com.cbapps.javafx.gamo.math.Rotation;
+import com.cbapps.javafx.gamo.math.RotationalDelta;
 import com.cbapps.javafx.gamo.scenes.GameScene;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -19,8 +20,8 @@ public class TestMain extends Application {
 		for (int i = 0; i < 100; i++) {
 			Rotation r1 = Rotation.ORIGIN.withHorizontal(Math.random() * 360);
 			Rotation r2 = Rotation.ORIGIN.withHorizontal(Math.random() * 360);
-			double small = r1.smallestHorizontalDeltaTo(r2);
-			System.out.format("r1:%6.1f |r2:%6.1f |smallest:%6.1f%n", r1.getHorizontal(), r2.getHorizontal(), small);
+			RotationalDelta small = r1.smallestDeltaTo(r2);
+			System.out.format("r1:%6.1f |r2:%6.1f |smallest:%6.1f%n", r1.getHorizontal(), r2.getHorizontal(), small.getHorizontal());
 		}
 
 		Pane group = new StackPane();

@@ -24,8 +24,8 @@ public abstract class GameObjectBase extends GameObject {
 	}
 
 	@Override
-	public void setParent(GameObjectGroup parent) {
-		super.setParent(parent);
+	public void setParentGroup(GameObjectGroup parent) {
+		super.setParentGroup(parent);
 		if (node == null)
 			return;
 

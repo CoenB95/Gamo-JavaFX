@@ -5,15 +5,23 @@ import com.cbapps.javafx.gamo.objects.GameObject;
 public abstract class GameObjectComponent {
 	private GameObject parentObject;
 
-	protected GameObject getParentObject() {
+	protected final GameObject getParentObject() {
 		return parentObject;
 	}
 
-	protected void onAddedToObject(GameObject parent) {}
+	protected void onAttach(GameObject newParent) {}
+
+	protected void onDetach(GameObject oldParent) {}
+
 	public abstract void onUpdate(double elapsedSeconds);
 
 	public final void setParentObject(GameObject parent) {
+		if (parentObject != null)
+			onDetach(parentObject);
+
 		parentObject = parent;
-		onAddedToObject(parentObject);
+
+		if (parentObject != null)
+			onAttach(parentObject);
 	}
 }

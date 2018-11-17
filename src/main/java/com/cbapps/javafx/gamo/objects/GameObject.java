@@ -22,12 +22,15 @@ public abstract class GameObject {
 		targetRotation = rotation = Rotation.ORIGIN;
 	}
 
-	public void addComponent(GameObjectComponent component) {
+	public final void addComponent(GameObjectComponent component) {
+		if (component == null)
+			return;
+
 		component.setParentObject(this);
 		components.add(component);
 	}
 
-	public List<GameObjectComponent> getComponents() {
+	public final List<GameObjectComponent> getComponents() {
 		return Collections.unmodifiableList(components);
 	}
 
@@ -51,21 +54,46 @@ public abstract class GameObject {
 		return targetRotation;
 	}
 
+	protected void onAttach(GameObjectGroup newParent) {}
+
+	protected void onDetach(GameObjectGroup oldParent) {}
+
 	public void onUpdate(double elapsedSeconds) {
 		components.forEach(c -> c.onUpdate(elapsedSeconds));
-		position = targetPosition;
-		rotation = targetRotation;
 	}
 
-	public void setParent(GameObjectGroup parent){
+	public final boolean removeComponent(GameObjectComponent component) {
+		if (component == null || !components.contains(component))
+			return false;
+
+		component.setParentObject(null);
+		components.remove(component);
+		return true;
+	}
+
+	public void setParentGroup(GameObjectGroup parent) {
+		if (parentGroup != null)
+			onDetach(parent);
+
 		parentGroup = parent;
+
+		if (parentGroup != null)
+			onAttach(parentGroup);
 	}
 
-	public void setTargetPosition(Position targetPosition) {
+	public final void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public final void setRotation(Rotation rotation) {
+		this.rotation = rotation;
+	}
+
+	public final void setTargetPosition(Position targetPosition) {
 		this.targetPosition = targetPosition;
 	}
 
-	public void setTargetRotation(Rotation targetRotation) {
+	public final void setTargetRotation(Rotation targetRotation) {
 		this.targetRotation = targetRotation;
 	}
 }

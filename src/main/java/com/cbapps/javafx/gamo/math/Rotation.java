@@ -1,16 +1,11 @@
 package com.cbapps.javafx.gamo.math;
 
-public class Rotation {
-	private double horizontal;
-	private double vertical;
-	private double roll;
+public class Rotation extends RotationalDelta {
 
 	public static final Rotation ORIGIN = new Rotation(0, 0, 0);
 
 	public Rotation(double horizontal, double vertical, double roll) {
-		this.horizontal = horizontal;
-		this.vertical = vertical;
-		this.roll = roll;
+		super(horizontal, vertical, roll);
 
 		while (this.horizontal < 0)
 			this.horizontal += 360;
@@ -28,71 +23,12 @@ public class Rotation {
 			this.roll -= 360;
 	}
 
-	public Rotation add(Rotation rotation) {
-		return new Rotation(horizontal + rotation.horizontal,
-				vertical + rotation.vertical,
-				roll + rotation.roll);
-	}
-
-	public Rotation add(double horizontalValue, double verticalValue, double rollValue) {
-		return new Rotation(horizontal + horizontalValue,
-				vertical + verticalValue,
-				roll + rollValue);
-	}
-
-	public Rotation addHorizontal(double value) {
-		return new Rotation(horizontal + value, vertical, roll);
-	}
-
-	public Rotation addVertical(double value) {
-		return new Rotation(horizontal, vertical + value, roll);
-	}
-
-	public Rotation addRoll(double value) {
-		return new Rotation(horizontal, vertical, roll + value);
-	}
-
-	public double getHorizontal() {
-		return horizontal;
-	}
-
-	public double getVertical() {
-		return vertical;
-	}
-
-	public double getRoll() {
-		return roll;
-	}
-
-	public Rotation multiply(double factor) {
-		return new Rotation(horizontal * factor, vertical * factor, roll * factor);
-	}
-
-	public double smallestHorizontalDeltaTo(Rotation other) {
-		double delta = other.horizontal - horizontal;
-		if (delta > 180)
-			return delta - 360;
-		if (delta < -180)
-			return delta + 360;
-		return delta;
-	}
-
-	public double smallestVerticalDeltaTo(Rotation other) {
-		double delta = other.vertical - vertical;
-		if (delta > 180)
-			return delta - 360;
-		if (delta < -180)
-			return delta + 360;
-		return delta;
-	}
-
-	public double smallestRollDeltaTo(Rotation other) {
-		double delta = other.roll - roll;
-		if (delta > 180)
-			return delta - 360;
-		if (delta < -180)
-			return delta + 360;
-		return delta;
+	@Override
+	public Rotation add(RotationalDelta rotation) {
+		return new Rotation(
+				horizontal + rotation.getHorizontal(),
+				vertical + rotation.getVertical(),
+				roll + rotation.getRoll());
 	}
 
 	public Rotation withHorizontal(double value) {
