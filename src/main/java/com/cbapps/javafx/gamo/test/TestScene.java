@@ -1,10 +1,10 @@
-package gamo.test;
+package com.cbapps.javafx.gamo.test;
 
-import gamo.math.Position;
-import gamo.math.Rotation;
-import gamo.objects.Camera;
-import gamo.objects.CubeObject;
-import gamo.scenes.GameScene;
+import com.cbapps.javafx.gamo.objects.CubeObject;
+import com.cbapps.javafx.gamo.math.Position;
+import com.cbapps.javafx.gamo.math.Rotation;
+import com.cbapps.javafx.gamo.objects.Camera;
+import com.cbapps.javafx.gamo.scenes.GameScene;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 

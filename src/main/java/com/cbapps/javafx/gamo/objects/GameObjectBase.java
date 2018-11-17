@@ -1,9 +1,7 @@
-package gamo.objects;
+package com.cbapps.javafx.gamo.objects;
 
-import gamo.groups.GameObjectGroup;
-import gamo.scenes.GameScene;
+import com.cbapps.javafx.gamo.groups.GameObjectGroup;
 import javafx.geometry.Point3D;
-import javafx.scene.Camera;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;

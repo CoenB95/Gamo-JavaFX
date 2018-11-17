@@ -1,4 +1,4 @@
-package gamo.math;
+package com.cbapps.javafx.gamo.math;
 
 public class Position {
 	private double x;

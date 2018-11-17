@@ -1,7 +1,7 @@
-package gamo.scenes;
+package com.cbapps.javafx.gamo.scenes;
 
-import gamo.groups.GameObjectGroup;
-import gamo.objects.GameObject;
+import com.cbapps.javafx.gamo.groups.GameObjectGroup;
+import com.cbapps.javafx.gamo.objects.GameObject;
 import javafx.scene.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;

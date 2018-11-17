@@ -1,4 +1,4 @@
-package gamo.objects;
+package com.cbapps.javafx.gamo.objects;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;

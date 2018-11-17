@@ -1,9 +1,9 @@
-package gamo.objects;
+package com.cbapps.javafx.gamo.objects;
 
-import gamo.components.GameObjectComponent;
-import gamo.groups.GameObjectGroup;
-import gamo.math.Position;
-import gamo.math.Rotation;
+import com.cbapps.javafx.gamo.groups.GameObjectGroup;
+import com.cbapps.javafx.gamo.components.GameObjectComponent;
+import com.cbapps.javafx.gamo.math.Position;
+import com.cbapps.javafx.gamo.math.Rotation;
 
 import java.util.ArrayList;
 import java.util.Collections;

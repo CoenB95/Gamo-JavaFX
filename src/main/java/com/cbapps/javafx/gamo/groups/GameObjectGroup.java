@@ -1,7 +1,7 @@
-package gamo.groups;
+package com.cbapps.javafx.gamo.groups;
 
-import gamo.objects.GameObject;
-import gamo.objects.GameObjectBase;
+import com.cbapps.javafx.gamo.objects.GameObject;
+import com.cbapps.javafx.gamo.objects.GameObjectBase;
 import javafx.scene.Group;
 
 import java.util.ArrayList;

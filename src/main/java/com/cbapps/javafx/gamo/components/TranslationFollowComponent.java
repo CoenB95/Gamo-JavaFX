@@ -1,6 +1,6 @@
-package gamo.components;
+package com.cbapps.javafx.gamo.components;
 
-import gamo.objects.GameObject;
+import com.cbapps.javafx.gamo.objects.GameObject;
 
 public class TranslationFollowComponent extends GameObjectComponent {
 

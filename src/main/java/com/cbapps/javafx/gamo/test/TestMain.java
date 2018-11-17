@@ -1,7 +1,7 @@
-package gamo.test;
+package com.cbapps.javafx.gamo.test;
 
-import gamo.math.Rotation;
-import gamo.scenes.GameScene;
+import com.cbapps.javafx.gamo.math.Rotation;
+import com.cbapps.javafx.gamo.scenes.GameScene;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
