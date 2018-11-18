@@ -8,10 +8,13 @@ import com.cbapps.javafx.gamo.math.Rotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public abstract class GameObject {
 	private GameObjectGroup parentGroup;
 	private List<GameObjectComponent> components = new ArrayList<>();
+	private List<GameObjectComponent> editableComponents = new ArrayList<>();
 	private Position position;
 	private Rotation rotation;
 	private Position targetPosition;
@@ -26,8 +29,8 @@ public abstract class GameObject {
 		if (component == null)
 			return;
 
-		component.setParentObject(this);
 		components.add(component);
+		component.setParentObject(this);
 	}
 
 	public final List<GameObjectComponent> getComponents() {
@@ -60,6 +63,13 @@ public abstract class GameObject {
 
 	public void onUpdate(double elapsedSeconds) {
 		components.forEach(c -> c.onUpdate(elapsedSeconds));
+
+		//If no component is taking care of actually adjusting the position/rotation
+		//based on the target, we'll do the basics.
+		if (editableComponents.isEmpty()) {
+			position = targetPosition;
+			rotation = targetRotation;
+		}
 	}
 
 	public final boolean removeComponent(GameObjectComponent component) {
@@ -68,6 +78,7 @@ public abstract class GameObject {
 
 		component.setParentObject(null);
 		components.remove(component);
+		editableComponents.remove(component);
 		return true;
 	}
 
@@ -81,12 +92,14 @@ public abstract class GameObject {
 			onAttach(parentGroup);
 	}
 
-	public final void setPosition(Position position) {
-		this.position = position;
-	}
+	public final Editor getEditor(GameObjectComponent component) {
+		if (component == null || !components.contains(component))
+			return null;
 
-	public final void setRotation(Rotation rotation) {
-		this.rotation = rotation;
+		if (!editableComponents.contains(component))
+			editableComponents.add(component);
+
+		return new Editor();
 	}
 
 	public final void setTargetPosition(Position targetPosition) {
@@ -95,5 +108,15 @@ public abstract class GameObject {
 
 	public final void setTargetRotation(Rotation targetRotation) {
 		this.targetRotation = targetRotation;
+	}
+
+	public class Editor {
+		public final void setPosition(Position nextPosition) {
+			position = nextPosition;
+		}
+
+		public final  void setRotation(Rotation nextRotation) {
+			rotation = nextRotation;
+		}
 	}
 }

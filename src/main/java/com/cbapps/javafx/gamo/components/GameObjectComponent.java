@@ -15,7 +15,7 @@ public abstract class GameObjectComponent {
 
 	public abstract void onUpdate(double elapsedSeconds);
 
-	public final void setParentObject(GameObject parent) {
+	public void setParentObject(GameObject parent) {
 		if (parentObject != null)
 			onDetach(parentObject);
 

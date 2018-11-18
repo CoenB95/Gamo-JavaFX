@@ -3,7 +3,7 @@ package com.cbapps.javafx.gamo.components;
 import com.cbapps.javafx.gamo.math.Rotation;
 import com.cbapps.javafx.gamo.math.RotationalDelta;
 
-public class SmoothRotationComponent extends GameObjectComponent {
+public class SmoothRotationComponent extends GameObjectEditingComponent {
 
 	private double snappyness;
 
@@ -20,6 +20,6 @@ public class SmoothRotationComponent extends GameObjectComponent {
 		Rotation r1 = getParentObject().getRotation();
 		Rotation r2 = getParentObject().getTargetRotation();
 		RotationalDelta delta = r1.smallestDeltaTo(r2).multiply(1.0 - snappyness);
-		getParentObject().setRotation(getParentObject().getRotation().add(delta));
+		getEditableParentObject().setRotation(getParentObject().getRotation().add(delta));
 	}
 }

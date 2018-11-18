@@ -3,7 +3,7 @@ package com.cbapps.javafx.gamo.components;
 import com.cbapps.javafx.gamo.math.Position;
 import com.cbapps.javafx.gamo.math.PositionalDelta;
 
-public class SmoothTranslationComponent extends GameObjectComponent {
+public class SmoothTranslationComponent extends GameObjectEditingComponent {
 
 	private double snappyness;
 
@@ -20,6 +20,6 @@ public class SmoothTranslationComponent extends GameObjectComponent {
 		Position p1 = getParentObject().getPosition();
 		Position p2 = getParentObject().getTargetPosition();
 		PositionalDelta delta = p2.subtract(p1).multiply(1.0 - snappyness);
-		getParentObject().setPosition(getParentObject().getPosition().add(delta));
+		getEditableParentObject().setPosition(getParentObject().getPosition().add(delta));
 	}
 }
