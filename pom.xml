@@ -8,6 +8,11 @@
     <artifactId>gamo</artifactId>
     <version>1.0</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mainClass>com.cbapps.javafx.gamo.test.TestMain</mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -37,7 +42,4 @@
         </plugins>
     </build>
 
-    <properties>
-        <release>11.0.1</release>
-    </properties>
 </project>

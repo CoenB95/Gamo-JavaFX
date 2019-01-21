@@ -1,28 +1,23 @@
 package com.cbapps.javafx.gamo.objects;
 
+import com.cbapps.javafx.gamo.components.GameObjectEditor;
 import com.cbapps.javafx.gamo.groups.GameObjectGroup;
 import com.cbapps.javafx.gamo.components.GameObjectComponent;
-import com.cbapps.javafx.gamo.math.Position;
-import com.cbapps.javafx.gamo.math.Rotation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public abstract class GameObject {
 	private GameObjectGroup parentGroup;
 	private List<GameObjectComponent> components = new ArrayList<>();
-	private List<GameObjectComponent> editableComponents = new ArrayList<>();
-	private Position position;
-	private Rotation rotation;
-	private Position targetPosition;
-	private Rotation targetRotation;
+	private List<GameObjectEditor> editors = new ArrayList<>();
+	private GameVector currentVector;
+	private GameVector targetVector;
 
 	public GameObject() {
-		targetPosition = position = Position.ORIGIN;
-		targetRotation = rotation = Rotation.ORIGIN;
+		currentVector = new GameVector();
+		targetVector = new GameVector();
 	}
 
 	public final void addComponent(GameObjectComponent component) {
@@ -30,7 +25,13 @@ public abstract class GameObject {
 			return;
 
 		components.add(component);
-		component.setParentObject(this);
+	}
+
+	public final void addEditor(GameObjectEditor editor) {
+		if (editor == null)
+			return;
+
+		editors.add(editor);
 	}
 
 	public final List<GameObjectComponent> getComponents() {
@@ -41,20 +42,12 @@ public abstract class GameObject {
 		return parentGroup;
 	}
 
-	public Position getPosition() {
-		return position;
+	public GameVector getCurrentVector() {
+		return currentVector;
 	}
 
-	public Rotation getRotation() {
-		return rotation;
-	}
-
-	public Position getTargetPosition() {
-		return targetPosition;
-	}
-
-	public Rotation getTargetRotation() {
-		return targetRotation;
+	public GameVector getTargetVector() {
+		return targetVector;
 	}
 
 	protected void onAttach(GameObjectGroup newParent) {}
@@ -62,13 +55,14 @@ public abstract class GameObject {
 	protected void onDetach(GameObjectGroup oldParent) {}
 
 	public void onUpdate(double elapsedSeconds) {
-		components.forEach(c -> c.onUpdate(elapsedSeconds));
+		components.forEach(c -> targetVector = c.onUpdate(elapsedSeconds, targetVector));
 
 		//If no component is taking care of actually adjusting the position/rotation
 		//based on the target, we'll do the basics.
-		if (editableComponents.isEmpty()) {
-			position = targetPosition;
-			rotation = targetRotation;
+		if (editors.isEmpty()) {
+			currentVector = targetVector;
+		} else {
+			editors.forEach(e -> currentVector = e.onUpdate(elapsedSeconds, currentVector, targetVector));
 		}
 	}
 
@@ -76,9 +70,15 @@ public abstract class GameObject {
 		if (component == null || !components.contains(component))
 			return false;
 
-		component.setParentObject(null);
 		components.remove(component);
-		editableComponents.remove(component);
+		return true;
+	}
+
+	public final boolean removeEditor(GameObjectEditor editor) {
+		if (editor == null || !editors.contains(editor))
+			return false;
+
+		editors.remove(editor);
 		return true;
 	}
 
@@ -92,31 +92,7 @@ public abstract class GameObject {
 			onAttach(parentGroup);
 	}
 
-	public final Editor getEditor(GameObjectComponent component) {
-		if (component == null || !components.contains(component))
-			return null;
-
-		if (!editableComponents.contains(component))
-			editableComponents.add(component);
-
-		return new Editor();
-	}
-
-	public final void setTargetPosition(Position targetPosition) {
-		this.targetPosition = targetPosition;
-	}
-
-	public final void setTargetRotation(Rotation targetRotation) {
-		this.targetRotation = targetRotation;
-	}
-
-	public class Editor {
-		public final void setPosition(Position nextPosition) {
-			position = nextPosition;
-		}
-
-		public final  void setRotation(Rotation nextRotation) {
-			rotation = nextRotation;
-		}
+	public void setTargetVector(GameVector targetVector) {
+		this.targetVector = targetVector;
 	}
 }

@@ -2,8 +2,9 @@ package com.cbapps.javafx.gamo.components;
 
 import com.cbapps.javafx.gamo.math.Position;
 import com.cbapps.javafx.gamo.math.PositionalDelta;
+import com.cbapps.javafx.gamo.objects.GameVector;
 
-public class SmoothTranslationComponent extends GameObjectEditingComponent {
+public class SmoothTranslationComponent implements GameObjectEditor {
 
 	private double snappyness;
 
@@ -16,10 +17,10 @@ public class SmoothTranslationComponent extends GameObjectEditingComponent {
 	}
 
 	@Override
-	public void onUpdate(double elapsedSeconds) {
-		Position p1 = getParentObject().getPosition();
-		Position p2 = getParentObject().getTargetPosition();
+	public GameVector onUpdate(double elapsedSeconds, GameVector current, GameVector target) {
+		Position p1 = current.getPosition();
+		Position p2 = target.getPosition();
 		PositionalDelta delta = p2.subtract(p1).multiply(1.0 - snappyness);
-		getEditableParentObject().setPosition(getParentObject().getPosition().add(delta));
+		return current.withPosition(p1.add(delta));
 	}
 }

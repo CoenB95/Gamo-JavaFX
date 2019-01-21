@@ -16,8 +16,9 @@ public class TestScene extends GameScene {
 		Camera camera = new Camera(10, 900);
 
 		CubeObject cube = new CubeObject(10, 10, 10);
-		cube.setTargetPosition(Position.ORIGIN.withZ(50));
-		cube.setTargetRotation(new Rotation(20, 20, 0));
+		cube.setTargetVector(cube.getTargetVector()
+				.withPosition(Position.ORIGIN.withZ(50))
+				.withRotation(new Rotation(20, 20, 0)));
 
 		add3DObject(cube);
 		add3DObject(camera);

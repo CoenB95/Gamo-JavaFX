@@ -4,6 +4,7 @@ import com.cbapps.javafx.gamo.groups.GameObjectGroup;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 public abstract class GameObjectBase extends GameObject {
@@ -11,16 +12,19 @@ public abstract class GameObjectBase extends GameObject {
 	private Translate translateTransform;
 	private Rotate horizontalRotateTransform;
 	private Rotate verticalRotateTransform;
+	private Scale scaleTransform;
 
 	public GameObjectBase() {
 		translateTransform = new Translate(0, 0, 0);
 		horizontalRotateTransform = new Rotate(0, 0, 0, 0, new Point3D(0, 1, 0));
 		verticalRotateTransform = new Rotate(0, 0, 0, 0, new Point3D(1, 0, 0));
+		scaleTransform = new Scale(1, 1, 1);
 	}
 
 	protected void setNode(Node node) {
 		this.node = node;
-		node.getTransforms().addAll(translateTransform, horizontalRotateTransform, verticalRotateTransform);
+		node.getTransforms().addAll(translateTransform, horizontalRotateTransform, verticalRotateTransform,
+				scaleTransform);
 	}
 
 	@Override
@@ -35,10 +39,13 @@ public abstract class GameObjectBase extends GameObject {
 	@Override
 	public void onUpdate(double elapsedSeconds) {
 		super.onUpdate(elapsedSeconds);
-		translateTransform.setX(getPosition().getX());
-		translateTransform.setY(-getPosition().getY());
-		translateTransform.setZ(getPosition().getZ());
-		horizontalRotateTransform.setAngle(getRotation().getHorizontal());
-		verticalRotateTransform.setAngle(getRotation().getVertical());
+		translateTransform.setX(getCurrentVector().getPosition().getX());
+		translateTransform.setY(-getCurrentVector().getPosition().getY());
+		translateTransform.setZ(getCurrentVector().getPosition().getZ());
+		horizontalRotateTransform.setAngle(getCurrentVector().getRotation().getHorizontal());
+		verticalRotateTransform.setAngle(getCurrentVector().getRotation().getVertical());
+		scaleTransform.setX(getCurrentVector().getScale());
+		scaleTransform.setY(getCurrentVector().getScale());
+		scaleTransform.setZ(getCurrentVector().getScale());
 	}
 }
