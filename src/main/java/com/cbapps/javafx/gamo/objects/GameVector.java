@@ -1,12 +1,14 @@
 package com.cbapps.javafx.gamo.objects;
 
 import com.cbapps.javafx.gamo.math.Position;
+import com.cbapps.javafx.gamo.math.PositionalDelta;
 import com.cbapps.javafx.gamo.math.Rotation;
+import com.cbapps.javafx.gamo.math.RotationalDelta;
 
 public class GameVector {
-	private Position position;
-	private Rotation rotation;
-	private double scale;
+	private final Position position;
+	private final Rotation rotation;
+	private final double scale;
 
 	public GameVector() {
 		this(Position.ORIGIN, Rotation.ORIGIN, 1.0);
@@ -32,6 +34,14 @@ public class GameVector {
 
 	public double getScale() {
 		return scale;
+	}
+
+	public GameVector addPosition(PositionalDelta positionalDelta) {
+		return new GameVector(position.add(positionalDelta), rotation, scale);
+	}
+
+	public GameVector addRotation(RotationalDelta rotationalDelta) {
+		return new GameVector(position, rotation.add(rotationalDelta), scale);
 	}
 
 	public GameVector withPosition(Position newPosition) {

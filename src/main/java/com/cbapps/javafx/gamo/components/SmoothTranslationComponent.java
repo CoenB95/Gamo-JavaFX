@@ -21,6 +21,6 @@ public class SmoothTranslationComponent implements GameObjectEditor {
 		Position p1 = current.getPosition();
 		Position p2 = target.getPosition();
 		PositionalDelta delta = p2.subtract(p1).multiply(1.0 - snappyness);
-		return current.withPosition(p1.add(delta));
+		return current.addPosition(delta);
 	}
 }

@@ -21,6 +21,6 @@ public class SmoothRotationComponent implements GameObjectEditor {
 		Rotation r1 = current.getRotation();
 		Rotation r2 = target.getRotation();
 		RotationalDelta delta = r1.smallestDeltaTo(r2).multiply(1.0 - snappyness);
-		return current.withRotation(r1.add(delta));
+		return current.addRotation(delta);
 	}
 }

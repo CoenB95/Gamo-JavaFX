@@ -13,6 +13,18 @@ public class RotationalDelta {
 		this.roll = roll;
 	}
 
+	public static RotationalDelta horizontal(double horizontal) {
+		return new RotationalDelta(horizontal, 0, 0);
+	}
+
+	public static RotationalDelta vertical(double vertical) {
+		return new RotationalDelta(0, vertical, 0);
+	}
+
+	public static RotationalDelta roll(double roll) {
+		return new RotationalDelta(0, 0, roll);
+	}
+
 	public RotationalDelta add(RotationalDelta rotation) {
 		return new RotationalDelta(
 				horizontal + rotation.getHorizontal(),

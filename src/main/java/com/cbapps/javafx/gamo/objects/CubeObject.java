@@ -7,8 +7,12 @@ import javafx.scene.shape.Box;
 public class CubeObject extends GameObjectBase {
 
 	public CubeObject(double w, double h, double d) {
+		this(w, h, d, Color.GREEN);
+	}
+
+	public CubeObject(double w, double h, double d, Color color) {
 		Box box = new Box(w, h, d);
-		box.setMaterial(new PhongMaterial(Color.GREEN));
+		box.setMaterial(new PhongMaterial(color));
 
 		setNode(box);
 	}
