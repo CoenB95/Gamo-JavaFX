@@ -8,6 +8,9 @@ public class AccelerationComponent implements GameObjectEditor {
 	private double speed;
 	private double targetValue;
 	private double value;
+	private double lastTargetValue;
+	private boolean forwards;
+	private boolean braking;
 
 	private TargetSupplier targetGetter;
 	private ValueConsumer valueSetter;
@@ -29,24 +32,36 @@ public class AccelerationComponent implements GameObjectEditor {
 
 		double stopDistance = speed * speed / (2 * acceleration);
 
-		boolean forwards = targetValue > value;
+		// To prevent the value from wobbling, once the breaks are applied these can
+		// only be lifted by changing the target again.
+		if (lastTargetValue != targetValue) {
+			braking = false;
+			lastTargetValue = targetValue;
+		}
+
+		if (!braking)
+			forwards = targetValue > value;
 
 		if (forwards) {
-			if (stopDistance >= targetValue - value) {
+			if (braking || stopDistance >= targetValue - value) {
 				speed -= acceleration * elapsedSeconds;
-				if (speed < 0)
+				braking = true;
+				if (speed < 0) {
 					speed = 0;
-			}
-			else
+				}
+			} else {
 				speed += acceleration * elapsedSeconds;
+			}
 		} else {
-			if (stopDistance >= value - targetValue) {
+			if (braking || stopDistance >= value - targetValue) {
 				speed += acceleration * elapsedSeconds;
-				if (speed > 0)
+				braking = true;
+				if (speed > 0) {
 					speed = 0;
-			}
-			else
+				}
+			} else {
 				speed -= acceleration * elapsedSeconds;
+			}
 		}
 
 		value += speed * elapsedSeconds;

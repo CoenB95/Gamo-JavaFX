@@ -6,6 +6,7 @@ import com.cbapps.javafx.gamo.scenes.GameScene;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -17,7 +18,7 @@ public class TestApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Pane group = new StackPane();
-		Scene scene = new Scene(group, 600, 400);
+		Scene scene = new Scene(group, 600, 400, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.ANTIQUEWHITE);
 
 		mainScene = new TestScene(scene, group);
