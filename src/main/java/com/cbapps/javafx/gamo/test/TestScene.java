@@ -21,15 +21,15 @@ public class TestScene extends GameScene {
 		CubeObject cube = new CubeObject(11, 11, 11, Color.GREEN.deriveColor(0, 1, 1, 0.1));
 
 		noop = new CubeObject(9, 9, 9, Color.RED);
-		noop.setTargetVector(noop.getTargetVector()
-				.withPosition(Position.ORIGIN.withZ(50))
-				.withRotation(new Rotation(0, 30, 0)));
+		noop.setPosition(Position.ORIGIN.withZ(50));
+		noop.setRotation(new Rotation(0, 30, 0));
 
-		cube.setTargetVector(noop.getTargetVector());
+		cube.setPosition(noop.getPosition());
+		cube.setRotation(noop.getRotation());
 		cube.addComponent(FollowComponent.rotatingAndTranslating(noop));
-		cube.addEditor(SmoothTranslationComponent.direct());
+		cube.addComponent(SmoothTranslationComponent.direct());
 		//cube.addEditor(new SmoothRotationComponent(0.95));
-		cube.addEditor(AccelerationComponent.horizontalRotation(75.0, 100.0));
+		cube.addComponent(AccelerationComponent.horizontalRotation(75.0, 100.0));
 
 		add3DObject(noop);
 		add3DObject(cube);
@@ -44,9 +44,7 @@ public class TestScene extends GameScene {
 		randomUpdateSecondsLeft -= elapsedSeconds;
 
 		if (randomUpdateSecondsLeft <= 0) {
-			GameVector newVector = noop.getCurrentVector()
-					.addRotation(RotationalDelta.horizontal(NumberGenerator.randomDouble(360)));
-			noop.setTargetVector(newVector);
+			noop.setRotation(noop.getRotation().withHorizontal(NumberGenerator.randomDouble(360)));
 			randomUpdateSecondsLeft = NumberGenerator.randomDouble(1, 10);
 		}
 	}

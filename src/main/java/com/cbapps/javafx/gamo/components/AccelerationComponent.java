@@ -1,8 +1,9 @@
 package com.cbapps.javafx.gamo.components;
 
+import com.cbapps.javafx.gamo.objects.GameObject;
 import com.cbapps.javafx.gamo.objects.GameVector;
 
-public class AccelerationComponent implements GameObjectEditor {
+public class AccelerationComponent extends GameObjectComponentBase {
 	private double acceleration;
 	private double maxSpeed;
 	private double speed;
@@ -21,14 +22,14 @@ public class AccelerationComponent implements GameObjectEditor {
 		AccelerationComponent editor = new AccelerationComponent();
 		editor.acceleration = acceleration;
 		editor.maxSpeed = maxSpeed;
-		editor.targetGetter = (t -> t.getRotation().getHorizontal());
-		editor.valueSetter = (c, t, v) -> c.withRotation(t.getRotation().withHorizontal(v));
+		editor.targetGetter = (o -> o.getRotation().getHorizontal());
+		editor.valueSetter = (o, v) -> o.setRotation(o.getRotation().withHorizontal(v));
 		return editor;
 	}
 
 	@Override
-	public GameVector onUpdate(double elapsedSeconds, GameVector current, GameVector target) {
-		targetValue = targetGetter.getTargetValue(target);
+	public void onUpdate(double elapsedSeconds) {
+		targetValue = targetGetter.getTargetValue(getParentObject());
 
 		double stopDistance = speed * speed / (2 * acceleration);
 
@@ -70,14 +71,14 @@ public class AccelerationComponent implements GameObjectEditor {
 		speed = speed > maxSpeed ? maxSpeed : speed;
 		speed = speed < -maxSpeed ? -maxSpeed : speed;
 
-		return valueSetter.setValue(current, target, value);
+		valueSetter.setValue(getParentObject(), value);
 	}
 
 	private interface TargetSupplier {
-		double getTargetValue(GameVector targetVector);
+		double getTargetValue(GameObject object);
 	}
 
 	private interface ValueConsumer {
-		GameVector setValue(GameVector currentVector, GameVector targetVector, double value);
+		void setValue(GameObject object, double value);
 	}
 }
