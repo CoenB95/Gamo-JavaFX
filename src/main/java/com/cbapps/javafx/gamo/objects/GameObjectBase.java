@@ -39,13 +39,13 @@ public abstract class GameObjectBase extends GameObject {
 	@Override
 	public void onUpdate(double elapsedSeconds) {
 		super.onUpdate(elapsedSeconds);
-		translateTransform.setX(getCurrentVector().getPosition().getX());
-		translateTransform.setY(-getCurrentVector().getPosition().getY());
-		translateTransform.setZ(getCurrentVector().getPosition().getZ());
-		horizontalRotateTransform.setAngle(getCurrentVector().getRotation().getHorizontal());
-		verticalRotateTransform.setAngle(getCurrentVector().getRotation().getVertical());
-		scaleTransform.setX(getCurrentVector().getScale());
-		scaleTransform.setY(getCurrentVector().getScale());
-		scaleTransform.setZ(getCurrentVector().getScale());
+		translateTransform.setX(getPosition().getX());
+		translateTransform.setY(-getPosition().getY());
+		translateTransform.setZ(getPosition().getZ());
+		horizontalRotateTransform.setAngle(getRotation().getHorizontal());
+		verticalRotateTransform.setAngle(getRotation().getVertical());
+		scaleTransform.setX(getScale());
+		scaleTransform.setY(getScale());
+		scaleTransform.setZ(getScale());
 	}
 }

@@ -1,10 +1,11 @@
 package com.cbapps.javafx.gamo.components;
 
+import com.cbapps.javafx.gamo.math.Position;
 import com.cbapps.javafx.gamo.math.PositionalDelta;
 import com.cbapps.javafx.gamo.objects.GameObject;
 import com.cbapps.javafx.gamo.objects.GameVector;
 
-public class FollowComponent implements GameObjectComponent {
+public class FollowComponent extends GameObjectComponentBase {
 
 	private GameObject subject;
 	private PositionalDelta offset;
@@ -43,13 +44,11 @@ public class FollowComponent implements GameObjectComponent {
 	}
 
 	@Override
-	public GameVector onUpdate(double elapsedSeconds, GameVector target) {
+	public void onUpdate(double elapsedSeconds) {
 		if (rotate)
-			target = target.withRotation(subject.getCurrentVector().getRotation());
+			getParentObject().setRotation(subject.getRotation());
 
 		if (translate)
-			target = target.withPosition(subject.getCurrentVector().getPosition().add(offset));
-
-		return target;
+			getParentObject().setPosition(subject.getPosition().add(offset));
 	}
 }

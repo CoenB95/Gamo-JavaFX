@@ -3,7 +3,7 @@ package com.cbapps.javafx.gamo.components;
 import com.cbapps.javafx.gamo.math.RotationalDelta;
 import com.cbapps.javafx.gamo.objects.GameVector;
 
-public class SpinComponent implements GameObjectComponent {
+public class SpinComponent extends GameObjectComponentBase {
 	private RotationalDelta rotationPerSecond;
 
 	public SpinComponent(RotationalDelta rotationPerSecond) {
@@ -11,8 +11,8 @@ public class SpinComponent implements GameObjectComponent {
 	}
 
 	@Override
-	public GameVector onUpdate(double elapsedSeconds, GameVector target) {
-		return target.withRotation(target.getRotation()
+	public void onUpdate(double elapsedSeconds) {
+		getParentObject().setRotation(getParentObject().getRotation()
 				.add(rotationPerSecond.multiply(elapsedSeconds)));
 	}
 }
