@@ -1,9 +1,12 @@
 package com.cbapps.javafx.gamo.math;
 
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
+
 public class PositionalDelta {
-	protected double x;
-	protected double y;
-	protected double z;
+	public final double x;
+	public final double y;
+	public final double z;
 
 	public static final PositionalDelta ZERO = new PositionalDelta(0, 0, 0);
 
@@ -26,18 +29,6 @@ public class PositionalDelta {
 				this.z + z);
 	}
 
-	public PositionalDelta add(RotationalDelta direction, PositionalDelta distance) {
-		double invY = Math.cos(Math.toRadians(direction.getVertical()));
-		return new PositionalDelta(
-				x + invY * Math.sin(-Math.toRadians(direction.getHorizontal())) * distance.getZ() +
-						invY * Math.cos(Math.toRadians(direction.getHorizontal())) * distance.getX() +
-						Math.cos(Math.toRadians(direction.getHorizontal())) * Math.sin(-Math.toRadians(direction.getVertical())) * distance.getY(),
-				y + Math.sin(Math.toRadians(direction.getVertical())) * distance.getY(),
-				z + invY * Math.sin(Math.toRadians(direction.getHorizontal())) * distance.getX() +
-						invY * Math.cos(Math.toRadians(direction.getHorizontal())) * distance.getZ() +
-						Math.sin(Math.toRadians(direction.getHorizontal())) * Math.sin(-Math.toRadians(direction.getVertical())) * distance.getY());
-	}
-
 	public PositionalDelta addX(double value) {
 		return new PositionalDelta(x + value, y, z);
 	}
@@ -52,18 +43,6 @@ public class PositionalDelta {
 
 	public Position asPosition() {
 		return new Position(x, y, z);
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public double getZ() {
-		return z;
 	}
 
 	public PositionalDelta limitX(double minValue, double maxValue)

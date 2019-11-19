@@ -14,6 +14,7 @@ public class TestScene extends GameObjectGroup {
 	private double randomUpdateSecondsLeft = 0;
 
 	private GameObject noop;
+	private GameObjectGroup cubeWithText;
 	private GameObject cube;
 	private TextObject text;
 
@@ -29,23 +30,26 @@ public class TestScene extends GameObjectGroup {
 
 		noop = new CubeObject(5, 5, 5, Color.RED.deriveColor(0, 1, 1, 0.1));
 		noop.setPosition(Position.ORIGIN.withZ(-50));
-		noop.setRotation(new Rotation(0, 45, 0));
+		noop.setRotation(new Rotation(0, -10, 0));
 
 		cube = new CubeObject(11, 11, 11, Color.GREEN.deriveColor(0, 1, 1, 0.8));
-		//cube.addComponent(FollowComponent.rotatingAndTranslating(noop));
-		//cube.addComponent(AccelerationComponent.horizontalRotation(75.0, 100.0));
-		cube.setRotation(noop.getRotation());
-		cube.addComponent(FollowComponent.translating(noop));
-		cube.addComponent(new SpinComponent(RotationalDelta.horizontal(10)));
 
 		text = new TextObject();
 		text.setScale(0.05);
-		//text.setPosition(Position.ORIGIN.withZ(50));
-		text.addComponent(FollowComponent.rotatingAndTranslating(cube, new PositionalDelta(0, 10, 0)));
+		text.setPosition(Position.ORIGIN.withZ(5.5).withX(5.5).withY(5.5));
 
-		addObject(text);
+		cubeWithText = new GameObjectGroup();
+		cubeWithText.addObject(cube);
+		cubeWithText.addObject(text);
+
+		cubeWithText.setRotation(noop.getRotation());
+		cubeWithText.addComponent(FollowComponent.rotatingAndTranslating(noop));
+		cubeWithText.addComponent(new SmoothRotationComponent(0.0));
+
+		//addObject(text);
 		addObject(noop);
-		addObject(cube);
+		addObject(cubeWithText);
+		//addObject(cube);
 		//addObject(text);
 		setCamera(camera);
 	}
@@ -54,7 +58,7 @@ public class TestScene extends GameObjectGroup {
 	public void onUpdate(double elapsedSeconds) {
 		super.onUpdate(elapsedSeconds);
 
-		text.textProperty().set(String.format("z: %.1f*", text.getPosition().getZ()));
+		text.textProperty().set(String.format("z: %.1f*", text.getPosition().z));
 
 		randomUpdateSecondsLeft -= elapsedSeconds;
 		if (randomUpdateSecondsLeft <= 0) {

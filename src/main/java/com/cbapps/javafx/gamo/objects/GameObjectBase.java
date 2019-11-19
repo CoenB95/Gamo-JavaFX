@@ -54,9 +54,9 @@ public abstract class GameObjectBase extends GameObject {
 		//Convert from JavaFX/2D to OpenGL/3D conventions:
 		//2D Y-down			-> 3D Y-up
 		//2D Z-elevation	-> 3D Z-depth
-		translateTransform.setX(getPosition().getX());
-		translateTransform.setY(-getPosition().getY());
-		translateTransform.setZ(-getPosition().getZ());
+		translateTransform.setX(getPosition().x);
+		translateTransform.setY(-getPosition().y);
+		translateTransform.setZ(-getPosition().z);
 		horizontalRotateTransform.setAngle(getRotation().getHorizontal());
 		verticalRotateTransform.setAngle(getRotation().getVertical());
 		scaleTransform.setX(getScale());
