@@ -53,7 +53,7 @@ public abstract class GameApp extends Application {
 				if (lastNow < 0)
 					lastNow = now;
 
-				elapsedSeconds += (double) (now - lastNow) / 1_000_000_000.0;
+				elapsedSeconds = (double) (now - lastNow) / 1_000_000_000.0;
 				if (useStableTiming)
 					onUpdate(0.013);
 				else
