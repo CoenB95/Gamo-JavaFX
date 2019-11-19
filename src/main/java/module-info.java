@@ -1,6 +1,7 @@
 module gamo {
 	requires javafx.controls;
 
+	exports com.cbapps.javafx.gamo.apps;
 	exports com.cbapps.javafx.gamo.components;
 	exports com.cbapps.javafx.gamo.groups;
 	exports com.cbapps.javafx.gamo.math;

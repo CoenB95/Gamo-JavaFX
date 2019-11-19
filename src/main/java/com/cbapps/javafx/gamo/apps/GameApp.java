@@ -6,15 +6,22 @@ import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class GameApp extends Application {
 	private GameObjectGroup gameStage;
 	private long lastNow = -1;
 	private double elapsedSeconds;
+	private Map<KeyCode, Boolean> keyMap = new HashMap<>();
 
 	public boolean useStableTiming = true;
 
@@ -36,9 +43,9 @@ public abstract class GameApp extends Application {
 		scene.setFill(Color.ANTIQUEWHITE);
 		root.getChildren().add(gameStage.getGroup());
 		onStart(gameStage);
-		//scene.setOnKeyPressed(this::onKeyPressed);
-		//scene.setOnKeyReleased(this::onKeyReleased);
-		//scene.setOnMouseMoved(this::onMouseMove);
+		scene.setOnKeyPressed(this::onKeyPressed);
+		scene.setOnKeyReleased(this::onKeyReleased);
+		scene.setOnMouseMoved(this::onMouseMove);
 
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
@@ -48,9 +55,9 @@ public abstract class GameApp extends Application {
 
 				elapsedSeconds += (double) (now - lastNow) / 1_000_000_000.0;
 				if (useStableTiming)
-					gameStage.onUpdate(0.013);
+					onUpdate(0.013);
 				else
-					gameStage.onUpdate(elapsedSeconds);
+					onUpdate(elapsedSeconds);
 				lastNow = now;
 			}
 		};
@@ -58,5 +65,27 @@ public abstract class GameApp extends Application {
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+
+	public final boolean isKeyPressed(KeyCode key) {
+		return keyMap.getOrDefault(key, false);
+	}
+
+	public void onKeyPressed(KeyEvent event)
+	{
+		keyMap.put(event.getCode(), true);
+	}
+
+	public void onKeyReleased(KeyEvent event)
+	{
+		keyMap.put(event.getCode(), false);
+	}
+
+	public void onMouseMove(MouseEvent event) {
+
+	}
+
+	public void onUpdate(double elapsedSeconds) {
+		gameStage.onUpdate(elapsedSeconds);
 	}
 }
