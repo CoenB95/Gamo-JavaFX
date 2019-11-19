@@ -24,7 +24,10 @@ public class SmoothScalingComponent extends GameObjectComponentBase {
 	public void onUpdate(double elapsedSeconds) {
 		double s1 = lastScale;
 		double s2 = getParentObject().getScale();
-		double delta = (s2 - s1) * (1.0 - snappyness);
-		getParentObject().setScale(s1 + delta);
+		if (snappyness > 0) {
+			double delta = (s2 - s1) * (elapsedSeconds / snappyness);
+			getParentObject().setScale(s1 + delta);
+		}
+		lastScale = getParentObject().getScale();
 	}
 }

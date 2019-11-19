@@ -44,13 +44,11 @@ public class TestScene extends GameObjectGroup {
 
 		cubeWithText.setRotation(noop.getRotation());
 		cubeWithText.addComponent(FollowComponent.rotatingAndTranslating(noop));
-		cubeWithText.addComponent(new SmoothRotationComponent(0.0));
+		//cubeWithText.addComponent(AccelerationComponent.horizontalRotation(25.0, 100.0));
+		cubeWithText.addComponent(new SmoothRotationComponent(0.5));
 
-		//addObject(text);
 		addObject(noop);
 		addObject(cubeWithText);
-		//addObject(cube);
-		//addObject(text);
 		setCamera(camera);
 	}
 

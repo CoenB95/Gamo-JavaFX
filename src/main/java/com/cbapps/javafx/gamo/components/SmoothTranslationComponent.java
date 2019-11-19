@@ -27,7 +27,10 @@ public class SmoothTranslationComponent extends GameObjectComponentBase {
 	public void onUpdate(double elapsedSeconds) {
 		Position p1 = lastPosition;
 		Position p2 = getParentObject().getPosition();
-		PositionalDelta delta = p2.subtract(p1).multiply(1.0 - snappyness);
-		getParentObject().setPosition(p1.add(delta));
+		if (snappyness > 0) {
+			PositionalDelta delta = p2.subtract(p1).multiply(elapsedSeconds / snappyness);
+			getParentObject().setPosition(p1.add(delta));
+		}
+		lastPosition = getParentObject().getPosition();
 	}
 }
