@@ -1,5 +1,7 @@
 package com.cbapps.javafx.gamo.test;
 
+import com.cbapps.javafx.gamo.apps.GameApp;
+import com.cbapps.javafx.gamo.groups.GameObjectGroup;
 import com.cbapps.javafx.gamo.math.Rotation;
 import com.cbapps.javafx.gamo.math.RotationalDelta;
 import com.cbapps.javafx.gamo.scenes.GameScene;
@@ -12,25 +14,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class TestApp extends Application {
-	private GameScene mainScene;
+public class TestApp extends GameApp {
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 	@Override
-	public void start(Stage primaryStage) {
-		Pane group = new StackPane();
-		Scene scene = new Scene(group, 600, 400, true, SceneAntialiasing.BALANCED);
-		scene.setFill(Color.ANTIQUEWHITE);
-
-		mainScene = new TestScene(scene, group);
-
-		new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				mainScene.onUpdate(0.013);
-			}
-		}.start();
-
-		primaryStage.setScene(scene);
-		primaryStage.show();
+	public void onStart(GameObjectGroup gameStage) {
+		gameStage.addObject(new TestScene());
 	}
 }

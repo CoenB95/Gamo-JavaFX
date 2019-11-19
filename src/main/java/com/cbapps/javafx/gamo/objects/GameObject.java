@@ -69,7 +69,7 @@ public abstract class GameObject {
 
 	public void setParentGroup(GameObjectGroup parent) {
 		if (parentGroup != null)
-			onDetach(parent);
+			onDetach(parentGroup);
 
 		parentGroup = parent;
 

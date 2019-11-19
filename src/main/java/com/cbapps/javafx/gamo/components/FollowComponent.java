@@ -49,6 +49,6 @@ public class FollowComponent extends GameObjectComponentBase {
 			getParentObject().setRotation(subject.getRotation());
 
 		if (translate)
-			getParentObject().setPosition(subject.getPosition().add(offset));
+			getParentObject().setPosition(subject.getPosition().add(getParentObject().getRotation(), offset).asPosition());
 	}
 }

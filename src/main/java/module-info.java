@@ -1,5 +1,5 @@
 module gamo {
-	requires javafx.graphics;
+	requires javafx.controls;
 
 	exports com.cbapps.javafx.gamo.components;
 	exports com.cbapps.javafx.gamo.groups;

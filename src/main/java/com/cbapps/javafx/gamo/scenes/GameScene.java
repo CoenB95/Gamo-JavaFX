@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import java.util.*;
 
 public class GameScene extends GameObject {
+	private GameScene parentScene;
+
 	GameObjectGroup group2D;
 	GameObjectGroup group3D;
 	SubScene scene2D;
@@ -19,8 +21,7 @@ public class GameScene extends GameObject {
 
 	private Map<KeyCode, Boolean> keyMap = new HashMap<>();
 
-	public GameScene(Scene scene, Pane root)
-	{
+	public GameScene(Scene scene, Pane root) {
 		super();
 
 		group2D = new GameObjectGroup();

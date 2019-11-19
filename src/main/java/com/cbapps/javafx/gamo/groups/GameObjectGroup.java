@@ -1,5 +1,6 @@
 package com.cbapps.javafx.gamo.groups;
 
+import com.cbapps.javafx.gamo.objects.Camera;
 import com.cbapps.javafx.gamo.objects.GameObject;
 import com.cbapps.javafx.gamo.objects.GameObjectBase;
 import javafx.scene.Group;
@@ -42,5 +43,10 @@ public class GameObjectGroup extends GameObjectBase {
 
 	public final void removeObjects(Collection<? extends GameObject> objects) {
 		this.objects.forEach(this::removeObject);
+	}
+
+	public final void setCamera(Camera camera) {
+		group.getScene().setCamera(camera.camera);
+		addObject(camera);
 	}
 }

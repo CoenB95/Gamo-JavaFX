@@ -27,21 +27,36 @@ public abstract class GameObjectBase extends GameObject {
 				scaleTransform);
 	}
 
-	@Override
+	/*@Override
 	public void setParentGroup(GameObjectGroup parent) {
 		super.setParentGroup(parent);
 		if (node == null)
 			return;
 
 		parent.getGroup().getChildren().add(node);
+	}*/
+
+	@Override
+	protected void onAttach(GameObjectGroup newParent) {
+		newParent.getGroup().getChildren().add(node);
+		super.onAttach(newParent);
+	}
+
+	@Override
+	protected void onDetach(GameObjectGroup oldParent) {
+		oldParent.getGroup().getChildren().remove(node);
+		super.onDetach(oldParent);
 	}
 
 	@Override
 	public void onUpdate(double elapsedSeconds) {
 		super.onUpdate(elapsedSeconds);
+		//Convert from JavaFX/2D to OpenGL/3D conventions:
+		//2D Y-down			-> 3D Y-up
+		//2D Z-elevation	-> 3D Z-depth
 		translateTransform.setX(getPosition().getX());
 		translateTransform.setY(-getPosition().getY());
-		translateTransform.setZ(getPosition().getZ());
+		translateTransform.setZ(-getPosition().getZ());
 		horizontalRotateTransform.setAngle(getRotation().getHorizontal());
 		verticalRotateTransform.setAngle(getRotation().getVertical());
 		scaleTransform.setX(getScale());

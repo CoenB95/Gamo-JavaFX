@@ -26,15 +26,16 @@ public class PositionalDelta {
 				this.z + z);
 	}
 
-	public PositionalDelta add(RotationalDelta direction, double distance)
-	{
-		// Positive horizontal rotation == look to right.
-		// Positive vertical rotation == look up.
-		double invY = 1 - Math.abs(Math.sin(Math.toRadians(direction.getVertical())));
+	public PositionalDelta add(RotationalDelta direction, PositionalDelta distance) {
+		double invY = Math.cos(Math.toRadians(direction.getVertical()));
 		return new PositionalDelta(
-				x + invY * Math.cos(Math.toRadians(90 - direction.getHorizontal())) * distance,
-				y + Math.sin(Math.toRadians(direction.getVertical())) * distance,
-				z + invY * Math.sin(Math.toRadians(90 - direction.getHorizontal())) * distance);
+				x + invY * Math.sin(-Math.toRadians(direction.getHorizontal())) * distance.getZ() +
+						invY * Math.cos(Math.toRadians(direction.getHorizontal())) * distance.getX() +
+						Math.cos(Math.toRadians(direction.getHorizontal())) * Math.sin(-Math.toRadians(direction.getVertical())) * distance.getY(),
+				y + Math.sin(Math.toRadians(direction.getVertical())) * distance.getY(),
+				z + invY * Math.sin(Math.toRadians(direction.getHorizontal())) * distance.getX() +
+						invY * Math.cos(Math.toRadians(direction.getHorizontal())) * distance.getZ() +
+						Math.sin(Math.toRadians(direction.getHorizontal())) * Math.sin(-Math.toRadians(direction.getVertical())) * distance.getY());
 	}
 
 	public PositionalDelta addX(double value) {
