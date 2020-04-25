@@ -1,7 +1,6 @@
 package com.cbapps.javafx.gamo.components;
 
 import com.cbapps.javafx.gamo.objects.GameObject;
-import com.cbapps.javafx.gamo.objects.GameVector;
 
 public class AccelerationComponent extends GameObjectComponentBase {
 	private double acceleration;

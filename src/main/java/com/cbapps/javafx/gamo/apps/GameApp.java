@@ -3,7 +3,6 @@ package com.cbapps.javafx.gamo.apps;
 import com.cbapps.javafx.gamo.groups.GameObjectGroup;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.geometry.Point3D;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.KeyCode;

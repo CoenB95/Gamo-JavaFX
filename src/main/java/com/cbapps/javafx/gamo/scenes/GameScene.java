@@ -12,8 +12,6 @@ import javafx.scene.paint.Color;
 import java.util.*;
 
 public class GameScene extends GameObject {
-	private GameScene parentScene;
-
 	GameObjectGroup group2D;
 	GameObjectGroup group3D;
 	SubScene scene2D;

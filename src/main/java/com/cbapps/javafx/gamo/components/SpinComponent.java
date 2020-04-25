@@ -1,7 +1,6 @@
 package com.cbapps.javafx.gamo.components;
 
 import com.cbapps.javafx.gamo.math.RotationalDelta;
-import com.cbapps.javafx.gamo.objects.GameVector;
 
 public class SpinComponent extends GameObjectComponentBase {
 	private RotationalDelta rotationPerSecond;

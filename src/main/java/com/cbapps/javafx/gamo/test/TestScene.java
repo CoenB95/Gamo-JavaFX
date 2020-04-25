@@ -4,10 +4,6 @@ import com.cbapps.javafx.gamo.components.*;
 import com.cbapps.javafx.gamo.groups.GameObjectGroup;
 import com.cbapps.javafx.gamo.math.*;
 import com.cbapps.javafx.gamo.objects.*;
-import com.cbapps.javafx.gamo.scenes.GameScene;
-import javafx.beans.binding.Bindings;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class TestScene extends GameObjectGroup {

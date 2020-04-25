@@ -1,5 +1,5 @@
 module gamo {
-	requires javafx.controls;
+	requires transitive javafx.controls;
 
 	exports com.cbapps.javafx.gamo.apps;
 	exports com.cbapps.javafx.gamo.components;

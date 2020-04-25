@@ -1,8 +1,5 @@
 package com.cbapps.javafx.gamo.math;
 
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
-
 public class PositionalDelta {
 	public final double x;
 	public final double y;
