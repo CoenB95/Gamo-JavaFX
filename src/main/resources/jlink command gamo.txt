@@ -1,1 +1,0 @@
-jlink --module-path jmods;target;"C:\Users\coenb\.m2\repository\org\openjfx\javafx-controls\11.0.1";"C:\Users\coenb\.m2\repository\org\openjfx\javafx-graphics\11.0.1";"C:\Users\coenb\.m2\repository\org\openjfx\javafx-base\11.0.1" --add-modules gamo --output target/jlink --launcher gamo-test=gamo/com.cbapps.javafx.gamo.test.TestMain

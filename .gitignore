@@ -1,8 +1,8 @@
-/out
-/.idea/vcs.xml
-/.idea/misc.xml
-/.idea/workspace.xml
-/.idea/inspectionProfiles/Project_Default\.xml
-/.idea/uiDesigner.xml
-/.idea/libraries
-/target
+# Ignore Visual Studio Code Files
+.settings/
+.vscode/
+.classpath
+.project
+
+# Ignore Maven build output
+target/
