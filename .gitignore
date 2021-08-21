@@ -4,5 +4,9 @@
 .classpath
 .project
 
+# Ignore IntelliJ Files
+.idea/
+*.iml
+
 # Ignore Maven build output
 target/
