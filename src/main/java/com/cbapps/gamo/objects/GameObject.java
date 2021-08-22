@@ -83,16 +83,6 @@ public abstract class GameObject {
 		componentsSnapshot.forEach(this::removeComponent);
 	}
 
-	public void removeAllObjects(boolean removeObjectComponents) {
-		var childrenSnapshot = List.copyOf(children);
-
-		if (removeObjectComponents) {
-			childrenSnapshot.forEach(GameObject::removeAllComponents);
-		}
-
-		childrenSnapshot.forEach(this::removeObject);
-	}
-
 	public final boolean removeComponent(GameObjectComponent component) {
 		if (component == null || !components.contains(component))
 			return false;
@@ -109,6 +99,20 @@ public abstract class GameObject {
 		object.onDetach();
 		children.remove(object);
 		return true;
+	}
+
+	public void removeObjects(GameObject... objects) {
+		removeObjects(Arrays.asList(objects));
+	}
+
+	public void removeObjects(Collection<GameObject> objects) {
+		var childrenSnapshot = List.copyOf(children);
+		childrenSnapshot.stream()
+				.filter(objects::contains)
+				.forEach(child -> {
+					child.removeAllComponents();
+					removeObject(child);
+				});
 	}
 
 	public void setOrientation(Quaternion orientation) {

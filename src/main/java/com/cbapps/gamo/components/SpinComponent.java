@@ -1,7 +1,6 @@
 package com.cbapps.gamo.components;
 
 import com.cbapps.gamo.math.Quaternion;
-import com.cbapps.gamo.math.RotationalDelta;
 
 public class SpinComponent extends GameObjectComponentBase {
 	private Quaternion rotationPerSecond;

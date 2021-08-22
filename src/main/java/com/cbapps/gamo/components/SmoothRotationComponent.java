@@ -1,8 +1,6 @@
 package com.cbapps.gamo.components;
 
 import com.cbapps.gamo.math.Quaternion;
-import com.cbapps.gamo.math.Rotation;
-import com.cbapps.gamo.math.RotationalDelta;
 import com.cbapps.gamo.objects.GameObject;
 
 public class SmoothRotationComponent extends GameObjectComponentBase {

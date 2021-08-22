@@ -1,7 +1,5 @@
 package com.cbapps.gamo.components;
 
-import com.cbapps.gamo.math.Position;
-import com.cbapps.gamo.math.PositionalDelta;
 import com.cbapps.gamo.math.Vector3;
 import com.cbapps.gamo.objects.GameObject;
 

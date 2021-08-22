@@ -87,6 +87,28 @@ public record Quaternion(
         return this;
     }
 
+    public Vector3 multiply(Vector3 point) {
+        var tx = x * 2;
+        var ty = y * 2;
+        var tz = z * 2;
+        var xx = x * tx;
+        var yy = y * ty;
+        var zz = z * tz;
+        var xy = x * ty;
+        var xz = x * tz;
+        var yz = y * tz;
+        var wx = w * tx;
+        var wy = w * ty;
+        var wz = w * tz;
+
+        var nx = (1F - (yy + zz)) * point.x() + (xy - wz) * point.y() + (xz + wy) * point.z();
+        var ny = (xy + wz) * point.x() + (1F - (xx + zz)) * point.y() + (yz - wx) * point.z();
+        var nz = (xz - wy) * point.x() + (yz + wx) * point.y() + (1F - (xx + yy)) * point.z();
+
+        return new Vector3(nx, ny, nz);
+    }
+
+
     public Quaternion multiply(Quaternion other) {
         var nw = w * other.w - x * other.x - y * other.y - z * other.z;
         var nx = w * other.x + x * other.w + y * other.z - z * other.y;

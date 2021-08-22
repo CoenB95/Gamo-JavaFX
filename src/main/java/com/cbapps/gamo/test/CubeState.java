@@ -3,14 +3,14 @@ package com.cbapps.gamo.test;
 import com.cbapps.gamo.javafx.TextObject;
 import com.cbapps.gamo.math.Vector3;
 import com.cbapps.gamo.objects.AmbientLight;
-import com.cbapps.gamo.state.GameState;
-import javafx.scene.input.KeyCode;
+import com.cbapps.gamo.state.GameStateBase;
+import com.cbapps.gamo.state.IGameScene;
 import javafx.scene.input.KeyEvent;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class CubeState extends GameState {
+public class CubeState extends GameStateBase {
 	private final LocalDateTime startTime;
 
 	private final SpinningCubes cubeScene;
@@ -29,29 +29,29 @@ public class CubeState extends GameState {
 	public void onKeyPressed(KeyEvent event) {
 		super.onKeyPressed(event);
 
-		if (event.getCode() == KeyCode.SPACE) {
-			cubeScene.spinCube();
-		}
-
-		if (event.getCode() == KeyCode.ESCAPE) {
-			setState(new StartState());
+		switch (event.getCode()) {
+			case S -> cubeScene.spinCube();
+			case SPACE -> getScene().pushState(new PauseState());
+			case ESCAPE -> getScene().setState(new StartState());
 		}
 	}
 
 	@Override
-	public void onStart() {
-		var camera = getCamera();
+	public void onStart(IGameScene scene) {
+		super.onStart(scene);
+
+		var camera = scene.getCamera();
 		camera.setClip(10, 900);
 		camera.setPosition(Vector3.identity());
 
-		getScene2D().addObject(debugText);
-		getScene3D().addObjects(cubeScene, light);
+		scene.get2D().addObject(debugText);
+		scene.get3D().addObjects(cubeScene, light);
 	}
 
 	@Override
 	public void onStop() {
-		getScene2D().removeAllObjects(true);
-		getScene3D().removeAllObjects(true);
+		getScene().get2D().removeObject(debugText);
+		getScene().get3D().removeObjects(cubeScene, light);
 	}
 
 	@Override

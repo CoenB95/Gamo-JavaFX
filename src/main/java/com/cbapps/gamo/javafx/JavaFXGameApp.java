@@ -2,14 +2,14 @@ package com.cbapps.gamo.javafx;
 
 import com.cbapps.gamo.objects.Camera;
 import com.cbapps.gamo.objects.GameObject;
-import com.cbapps.gamo.state.GameApp;
-import com.cbapps.gamo.state.GameState;
+import com.cbapps.gamo.state.IGameScene;
+import com.cbapps.gamo.state.GameStateBase;
+import com.cbapps.gamo.state.IGameState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -17,35 +17,35 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Objects;
 
-public abstract class JavaFXGameApp extends Application implements GameApp {
+public abstract class JavaFXGameApp extends Application implements IGameScene {
 	private final Camera camera;
 	private final GameObjectBase group2D;
 	private final GameObjectBase group3D;
-	private final UpdateMode updateMode;
+	private final Deque<IGameState> states;
 
 	private SubScene scene2D;
-	private SubScene scene3D;
+	private UpdateMode updateMode;
 	private Long lastNow;
-	private GameState state;
 
 	public JavaFXGameApp() {
-		this(UpdateMode.SOLID);
-	}
-
-	public JavaFXGameApp(UpdateMode updateMode) {
-		Objects.requireNonNull(updateMode);
-
 		this.camera = new Camera();
 		this.group2D = new GroupObject();
 		this.group3D = new GroupObject();
-		this.updateMode = updateMode;
+		this.states = new LinkedList<>();
 	}
 
-	public abstract GameState createState();
+	protected abstract IGameState createState();
+
+	@Override
+	public void init() {
+		updateMode = UpdateMode.valueOf(getParameters()
+				.getNamed()
+				.getOrDefault("update-mode", UpdateMode.SOLID.name()));
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -63,7 +63,7 @@ public abstract class JavaFXGameApp extends Application implements GameApp {
 		scene2D.widthProperty().bind(root.widthProperty());
 		scene2D.setOnMouseMoved(this::onMouseMove2D);
 
-		scene3D = new SubScene(group3D.getGroup(), 300, 300, true, SceneAntialiasing.BALANCED);
+		SubScene scene3D = new SubScene(group3D.getGroup(), 300, 300, true, SceneAntialiasing.BALANCED);
 		scene3D.setFill(Color.TRANSPARENT);
 		scene3D.heightProperty().bind(root.heightProperty());
 		scene3D.widthProperty().bind(root.widthProperty());
@@ -73,9 +73,9 @@ public abstract class JavaFXGameApp extends Application implements GameApp {
 
 		root.getChildren().addAll(scene3D, scene2D);
 
-		state = createState();
+		var state = createState();
 		Objects.requireNonNull(state, "State must be provided");
-		state.start(this);
+		setState(state);
 
 		var timer = new AnimationTimer() {
 			@Override
@@ -88,11 +88,11 @@ public abstract class JavaFXGameApp extends Application implements GameApp {
 					case SOLID -> 0.013;
 				};
 
-				if (state == null) {
+				if (states.isEmpty()) {
 					return;
 				}
 
-				state.onUpdate(elapsedSeconds);
+				states.peek().onUpdate(elapsedSeconds);
 				group2D.onUpdate(elapsedSeconds);
 				group3D.onUpdate(elapsedSeconds);
 				lastNow = now;
@@ -115,12 +115,12 @@ public abstract class JavaFXGameApp extends Application implements GameApp {
 	}
 
 	@Override
-	public GameObject getScene2D() {
+	public GameObject get2D() {
 		return group2D;
 	}
 
 	@Override
-	public GameObject getScene3D() {
+	public GameObject get3D() {
 		return group3D;
 	}
 
@@ -131,35 +131,76 @@ public abstract class JavaFXGameApp extends Application implements GameApp {
 
 	private void onKeyPressed(KeyEvent event)
 	{
-		if (state != null) {
-			state.onKeyPressed(event);
+		if (!states.isEmpty()) {
+			states.peek().onKeyPressed(event);
 		}
 	}
 
 	private void onKeyReleased(KeyEvent event)
 	{
-		if (state != null) {
-			state.onKeyReleased(event);
+		if (!states.isEmpty()) {
+			states.peek().onKeyReleased(event);
 		}
 	}
 
 	private void onMouseMove2D(MouseEvent event) {
-		if (state != null) {
-			state.onMouseMove2D(event);
+		if (!states.isEmpty()) {
+			states.peek().onMouseMove2D(event);
 		}
 	}
 
 	private void onMouseMove3D(MouseEvent event) {
-		if (state != null) {
-			state.onMouseMove3D(event);
+		if (!states.isEmpty()) {
+			states.peek().onMouseMove3D(event);
 		}
 	}
 
 	@Override
-	public void setState(GameState state) {
-		this.state.stop();
-		this.state = state;
-		this.state.start(this);
+	public void popState() {
+		if (states.isEmpty()) {
+			return;
+		}
+
+		var state = states.pop();
+		state.onPause();
+		state.onStop();
+
+		var previousState = states.peek();
+
+		if (previousState != null) {
+			previousState.onResume();
+		}
+	}
+
+	@Override
+	public void pushState(IGameState newState) {
+		Objects.requireNonNull(newState);
+
+		var previousState = states.peek();
+
+		if (previousState != null) {
+			previousState.onPause();
+		}
+
+		states.push(newState);
+		newState.onStart(this);
+		newState.onResume();
+	}
+
+	@Override
+	public void setState(IGameState newState) {
+		var it = states.descendingIterator();
+
+		while (it.hasNext()) {
+			var previousState = it.next();
+			previousState.onPause();
+			previousState.onStop();
+		}
+
+		states.clear();
+		states.push(newState);
+		newState.onStart(this);
+		newState.onResume();
 	}
 
 	public enum UpdateMode {

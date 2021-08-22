@@ -8,16 +8,14 @@ import com.cbapps.gamo.javafx.GroupObject;
 import com.cbapps.gamo.javafx.TextObject;
 import com.cbapps.gamo.math.Quaternion;
 import com.cbapps.gamo.math.Vector3;
-import com.cbapps.gamo.state.GameState;
+import com.cbapps.gamo.state.GameStateBase;
+import com.cbapps.gamo.state.IGameScene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-public class StartState extends GameState {
+public class StartState extends GameStateBase {
 	private final CubeObject cube;
 	private final CubeObject mouseCube;
 	private final GroupObject mouseDrag;
@@ -35,25 +33,19 @@ public class StartState extends GameState {
 		super.onKeyPressed(event);
 
 		if (event.getCode() == KeyCode.SPACE) {
-			setState(new CubeState());
+			getScene().setState(new CubeState());
 		}
 	}
 
 	@Override
-	public void onStart() {
-		var camera = getCamera();
+	public void onStart(IGameScene scene) {
+		super.onStart(scene);
+
+		var camera = scene.getCamera();
 		camera.setClip(0.1, 100);
 		camera.setPosition(Vector3.z(5));
 
-		cube.addComponent(new SpinComponent(Quaternion.of(Vector3.unitY(), 10)));
-
-		mouseDrag.setPosition(new Vector3(getWidth() / 2, -getHeight() / 2, 0));
-
-		mouseCube.setPosition(mouseDrag.getPosition());
 		mouseCube.setOrientation(Quaternion.of(Vector3.unitX(), 45));
-		mouseCube.addComponent(new SpinComponent(Quaternion.of(Vector3.unitY(), 30)));
-		mouseCube.addComponent(FollowComponent.translating(mouseDrag));
-		mouseCube.addComponent(new SmoothTranslationComponent(0.3));
 
 		welcomeText.setPosition(Vector3.z(1.5));
 		welcomeText.setScale(0.0025);
@@ -63,14 +55,32 @@ public class StartState extends GameState {
 				===== WELCOME =====
 				Hit space to start""");
 
-		getScene2D().addObjects(mouseCube, mouseDrag);
-		getScene3D().addObjects(cube, welcomeText);
+		scene.get2D().addObjects(mouseCube, mouseDrag);
+		scene.get3D().addObjects(cube, welcomeText);
+	}
+
+	@Override
+	public void onResume() {
+		cube.addComponent(new SpinComponent(Quaternion.of(Vector3.unitY(), 10)));
+
+		mouseDrag.setPosition(new Vector3(getScene().getWidth() / 2, -getScene().getHeight() / 2, 0));
+
+		mouseCube.setPosition(mouseDrag.getPosition());
+		mouseCube.addComponent(new SpinComponent(Quaternion.of(Vector3.unitY(), 30)));
+		mouseCube.addComponent(FollowComponent.translating(mouseDrag));
+		mouseCube.addComponent(new SmoothTranslationComponent(0.3));
+	}
+
+	@Override
+	public void onPause() {
+		cube.removeAllComponents();
+		mouseCube.removeAllComponents();
 	}
 
 	@Override
 	public void onStop() {
-		getScene2D().removeAllObjects(true);
-		getScene3D().removeAllObjects(true);
+		getScene().get2D().removeObjects(mouseCube, mouseDrag);
+		getScene().get3D().removeObjects(cube, welcomeText);
 	}
 
 	@Override
